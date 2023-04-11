@@ -10,6 +10,7 @@ The app allows to perform full CRUD (create, read, update, and delete) functiona
 
 ## Technologies Used
 - [Materialize](https://materializecss.com/getting-started.html) - front-end framework based on Material Design
+- [jQuery 3.6.4](https://releases.jquery.com/) - JavaScript library
 - [Flask](https://flask.palletsprojects.com/en/1.1.x/) - micro web framework written in Python
 - [SQLAlchemy](https://www.sqlalchemy.org/) - Python SQL toolkit and Object Relational Mapper
 - [psycopg2](https://pypi.org/project/psycopg2/) - PostgreSQL database adapter for the Python programming language
@@ -130,6 +131,16 @@ To isolate the project from the rest of the system, I used a virtual environment
     # \dt
     ```
     Note: _If you modify the models later, you need to migrate the changes each time the file is updated with new context_
+
+
+- ### jQuery
+Add jQuery script using the CDN (Content Delivery Network) version of the framework.
+
+Note: _jQuery library must be loaded before the Materialize `<script>` tag_
+```
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="crossorigin="anonymous"></script>
+```
 
 - ### Materialize
 The easiest way to work with [Materialize](https://materializecss.com/getting-started.html) is to use the CDN (Content Delivery Network) version of the framework. To do this, add the following line to the `<head>` section of your HTML file:
