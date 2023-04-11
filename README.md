@@ -85,7 +85,51 @@ To isolate the project from the rest of the system, I used a virtual environment
 2. Set the environment variables in the `<env.py>` file:
     See the `example_env.py` file.
 3. Make imports and set the configuration in the `__init__.py` file of the main Flask app package.
+4. Create database (_PostgreSQL 14/Ubuntu 22.04_):
+    - Start running the PostgreSQL server:
+        ```
+        $ sudo service postgresql start
+        ```
+    - Log in to the PostgreSQL server as the default user:
+        _This command connect you to the `postgres` database as the `postgres` user_
+        ```
+        $ sudo -u postgres psql
+        ```
+        If you want to connect to a different database, or as a different user, you can use the following command:
+        ```
+        $ psql -d <database name> -U <user name>
+        ```
+        **or**
+        ```
+        $ psql <database name>
+        ```
+    - Create a new database:
+        ```
+        # CREATE DATABASE <database name>;
+        ```
+    - Switch to the new database:
+        ```
+        # \c <database name>
+        ```
+    - Create tables using the SQLAlchemy ORM in the `models.py` file
+5. Migrations
+    - Simple initial migration
+    (_this method good for initial setup, but not for later updates_):
+        ```
+        $ flask --app run.py shell
+        >>> from app import db
+        >>> db.create_all()
+        >>> exit()
+        ```
+    - Migration with Flask-Migrate
+        ...
 
+    - Check the dt table in the database:
+    ```
+    # psql <database name>
+    # \dt
+    ```
+    Note: _If you modify the models later, you need to migrate the changes each time the file is updated with new context_
 
 - ### Materialize
 The easiest way to work with [Materialize](https://materializecss.com/getting-started.html) is to use the CDN (Content Delivery Network) version of the framework. To do this, add the following line to the `<head>` section of your HTML file:
@@ -100,6 +144,6 @@ Then, add the following line to the end of the `<body>` section of your HTML fil
 
 ```
 
-## Development
+## Deployment
 
 ## Credits
