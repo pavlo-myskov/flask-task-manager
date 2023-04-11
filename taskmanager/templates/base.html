@@ -15,9 +15,9 @@
 </head>
 
 <body>
-  <nav class="light-green darken-1">
+  <nav class="teal lighten-1">
     <div class="nav-wrapper">
-      <a href="{{ url_for('home') }}" class="brand-logo">Task Manager</a>
+      <a href="{{ url_for('home') }}" class="brand-logo ">Task Manager</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -32,8 +32,21 @@
     <li><a href="">New Task</a></li>
     <li><a href="">Categories</a></li>
   </ul>
-  
-  <h1>HELLO FLASK</h1>
+
+  <main class="container">
+    <h1>Hello Flask</h1>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="page-footer teal darken-1">
+    <div class="footer-copyright">
+      <div class="container">
+        © <span id="copyright"></span> FlashDrag/CodeInstitute
+        <a class="white-text right" href="https://github.com/FlashDrag" target="_blank">&#9881; My GitHub</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
     crossorigin="anonymous"></script>
