@@ -16,3 +16,8 @@ main {
 .page-footer a:hover {
   color: rgba(255,255,255,0.8) !important;
 }
+
+.center-icon {
+  vertical-align: bottom;
+  /* font-size: 20px !important; */
+}
