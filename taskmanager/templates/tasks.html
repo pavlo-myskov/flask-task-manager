@@ -2,5 +2,11 @@
 {% block content %}
 
 <h3 class="teal-text text-darken-3 center-align">Tasks</h3>
+<div class="row">
+  <div class="col s12 center-align">
+    <a href="{{ url_for('add_task') }}" class="btn-large teal darken-1 waves-effect waves-light">
+      Add Task <i class="material-icons center-icon">add_to_photos</i></a>
+  </div>
+</div>
 
 {% endblock %}

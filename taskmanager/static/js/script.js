@@ -2,6 +2,16 @@ $(document).ready(function () {
     //  initialize the sidenav-trigger line into the navbar
     $('.sidenav').sidenav();
 
+    // initialize datepicker
+    let datepicker = document.querySelectorAll('.datepicker');
+    M.Datepicker.init(datepicker, {
+        format: "dd mmmm, yyyy",
+        i18n: {done: "Select"}
+    });
+
+    // initialize the select element
+    $('select').formSelect();
+
     // modal Initialization
     const modal1 = $('#modal1').modal();
     var instance = M.Modal.getInstance(modal1);
