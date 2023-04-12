@@ -21,3 +21,26 @@ main {
   vertical-align: bottom;
   /* font-size: 20px !important; */
 }
+
+/* Modal */
+.modal {
+  background-color: rgba(0, 0, 0, 0.7);
+  max-width: 40%;
+  will-change: top, opacity;
+}
+
+.modal-footer {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+@media screen and (max-width: 600px) {
+  .modal {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .modal {
+    max-width: 60%;
+  }
+}

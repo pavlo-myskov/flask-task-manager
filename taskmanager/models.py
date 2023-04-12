@@ -15,6 +15,12 @@ class Category(db.Model):
     tasks = db.relationship("Task", backref="category",
                             cascade="all, delete", lazy=True)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'category_name': self.category_name
+        }
+
 
 def __repr__(self):
     return self.category_name
