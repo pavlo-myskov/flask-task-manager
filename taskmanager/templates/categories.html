@@ -10,14 +10,14 @@
   </div>
 </div>
 <div class="row">
-  {% for categorie in categories %}
+  {% for category in categories %}
   <div class="col s12 m6 l4 xl3">
     <div class="card teal darken-3 center-align">
       <div class="card-content white-text">
-        <span class="card-title">{{ categorie.category_name }}</span>
+        <span class="card-title">{{ category.category_name }}</span>
       </div>
       <div class="card-action">
-        <a href="#" class="btn cyan darken-1">Edit</a>
+        <a href="{{ url_for('edit_category', category_id=category.id) }}" class="btn cyan darken-1">Edit</a>
         <a href="#" class="btn cyan lime darken-4">Delete</a>
       </div>
     </div>
