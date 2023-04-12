@@ -9,5 +9,20 @@
       Add Category <i class="material-icons center-icon">create_new_folder</i></a>
   </div>
 </div>
+<div class="row">
+  {% for categorie in categories %}
+  <div class="col s12 m6 l4 xl3">
+    <div class="card teal darken-3 center-align">
+      <div class="card-content white-text">
+        <span class="card-title">{{ categorie.category_name }}</span>
+      </div>
+      <div class="card-action">
+        <a href="#" class="btn cyan darken-1">Edit</a>
+        <a href="#" class="btn cyan lime darken-4">Delete</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 
 {% endblock %}
