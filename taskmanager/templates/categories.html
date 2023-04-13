@@ -5,14 +5,14 @@
 
 <div class="row">
   <div class="col s12 center-align">
-    <a href="{{ url_for('add_category') }}" class="btn-large teal darken-1 waves-effect waves-light">
+    <a href="{{ url_for('add_category') }}" class="btn-large cyan darken-1 waves-effect waves-light">
       Add Category <i class="material-icons center-icon">create_new_folder</i></a>
   </div>
 </div>
 <div class="row">
   {% for category in categories %}
   <div class="col s12 m6 l4 xl3">
-    <div class="card teal darken-3 center-align">
+    <div class="card cyan darken-3 center-align">
       <div class="card-content white-text">
         <span class="card-title">{{ category.category_name }}</span>
       </div>

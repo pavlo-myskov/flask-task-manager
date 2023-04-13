@@ -6,10 +6,11 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(25), unique=True, nullable=False)
 
-    # - refer to the Task model to create a one to many relationship.
-    # - backref is used to create a virtual column in the Task model
-    #   and establish a bidirectional relationship between the two models,
-    #   meaning it sort of reverses and becomes many-to-one
+    # - Refers to the Task model to create a one to many relationship.
+    # - Use category.tasks to get all tasks particular category
+    # - Backref attr adds a category attribute to the Task class;
+    #   this new attribute allows you to access the Category object
+    #   associated with a specific Task object directly.
     # - lazy=True means that when we query the database for categories,
     #   it can simultaneously identify any task linked to the categories
     tasks = db.relationship("Task", backref="category",

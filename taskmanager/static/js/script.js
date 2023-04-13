@@ -12,6 +12,9 @@ $(document).ready(function () {
     // initialize the select element
     $('select').formSelect();
 
+    // initialize the collapsible task elements
+    $('.collapsible').collapsible();
+
     // modal Initialization
     const modal1 = $('#modal1').modal();
     var instance = M.Modal.getInstance(modal1);

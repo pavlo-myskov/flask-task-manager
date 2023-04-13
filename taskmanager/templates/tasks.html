@@ -4,9 +4,58 @@
 <h3 class="teal-text text-darken-3 center-align">Tasks</h3>
 <div class="row">
   <div class="col s12 center-align">
-    <a href="{{ url_for('add_task') }}" class="btn-large teal darken-1 waves-effect waves-light">
+    <a href="{{ url_for('add_task') }}" class="btn-large cyan darken-1 waves-effect waves-light">
       Add Task <i class="material-icons center-icon">add_to_photos</i></a>
   </div>
 </div>
+
+<ul class="collapsible">
+  {% for task in tasks %}
+    <li>
+      <div class="collapsible-header cyan darken-3 white-text">
+        <i class="material-icons">arrow_drop_down</i>
+        <h4 class="task-name">{{ task.task_name }}</h4>
+        {% if task.due_date %}
+          <!-- https://strftime.org/ -->
+          <span>: {{ task.due_date.strftime('%d %B, %Y') }}</span>
+        {% endif %}
+        {% if task.is_urgent: %}
+          <span><i class="material-icons right orange-text ">error_outline</i></span>
+        {% endif %}
+      </div>
+      <div class="collapsible-body">
+        <p class="category-name">
+          <i class="material-icons center-icon">folder_open</i>
+          <!-- simple method to get the category from a task object: -->
+            {{ task.category.category_name }}
+            <!--
+            Since we have defined a backref="category" in the Category class,
+            SQLAlchemy creates a category attribute in the Task class to represent the relationship.
+            We can access the category name through this attribute.
+            -->
+
+          <!-- Using Jinja filter <selectattr> and <map> (must to pass <categories> into home view):
+          {{ categories | selectattr("id", "equalto", task.category_id) | map(attribute="category_name") | first }}
+          Select category id from categories list if the id matches the task category_id
+          and return the category_name from categories list
+          -->
+        </p>
+          {% if task.task_description %}
+            <p>
+              <i class="material-icons center-icon">description</i>
+              {{ task.task_description}}
+            </p>
+          {% endif %}
+        <div>
+          <a href="#"
+            class="btn cyan darken-1 waves-effect waves-light">Edit</a>
+          <!-- Modal Trigger -->
+          <a href="#modal1" data-task='#'
+            class="btn cyan lime darken-4 waves-effect waves-light modal-trigger">Delete</a>
+        </div>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
 
 {% endblock %}

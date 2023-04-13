@@ -22,6 +22,18 @@ main {
   /* font-size: 20px !important; */
 }
 
+/* Tasks */
+.task-name {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.category-name {
+  font-size: 18px;
+  font-weight: 500;
+}
+
 /* Modal */
 .modal {
   background-color: rgba(0, 0, 0, 0.7);
