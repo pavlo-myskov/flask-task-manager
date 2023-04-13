@@ -48,9 +48,10 @@ def add_task():
     if request.method == "POST":
         task = Task(
             task_name=request.form.get("task_name"),
-            task_description=request.form.get("task_description"),
+            task_description=request.form.get(
+                "task_description").strip() or None,
             is_urgent=bool(True if request.form.get("is_urgent") else False),
-            due_date=request.form.get("due_date"),
+            due_date=request.form.get("due_date") or None,
             category_id=request.form.get("category_id")
         )
         db.session.add(task)
