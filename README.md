@@ -15,6 +15,7 @@ The app allows to perform full CRUD (create, read, update, and delete) functiona
 - [SQLAlchemy](https://www.sqlalchemy.org/) - Python SQL toolkit and Object Relational Mapper
 - [psycopg2](https://pypi.org/project/psycopg2/) - PostgreSQL database adapter for the Python programming language
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) - Flask extension that adds support for SQLAlchemy to your Flask application
+- [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/) - Flask extension that handles SQLAlchemy database migrations for Flask applications using Alembic
 
 
 ## Project Setup
@@ -112,26 +113,59 @@ To isolate the project from the rest of the system, I used a virtual environment
         ```
         # \c <database name>
         ```
-    - Create tables using the SQLAlchemy ORM in the `models.py` file
-5. Migrations
-    - Simple initial migration
-    (_this method good for initial setup, but not for later updates_):
+    - Check the dt table in the database:
         ```
-        $ flask --app run.py shell
-        >>> from app import db
+        # psql <database name>
+        # \dt
+        ```
+    - Create tables using the SQLAlchemy ORM in the `models.py` file
+
+5. Local Migration
+
+    - Initial setup
+
+    _This method only for initial setup, it creates all the necessary tables in your database as defined by your SQLAlchemy models_
+        ```
+        $ python
+        >>> from taskmanager import db
         >>> db.create_all()
         >>> exit()
         ```
-    - Migration with Flask-Migrate
-        ...
+    - **To make changes to the database, you need [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/) extension:**
 
-    - Check the dt table in the database:
-    ```
-    # psql <database name>
-    # \dt
-    ```
-    Note: _If you modify the models later, you need to migrate the changes each time the file is updated with new context_
+        ```
+        $ pip install Flask-Migrate
+        ```
+    - Add the following lines to the `<__init__.py>` file of the main Flask app package:
+        ```
+        from flask_migrate import Migrate
 
+        migrate = Migrate(app, db)
+        ```
+
+    - Create a migration repository
+
+    _Run only once to initialize a new Alembic environment and create the required folder structure for managing database schema migrations_
+        ```
+        $ flask db init
+        ```
+    - Generate an initial migration:
+        ```
+        $ flask db migrate -m "Initial migration."
+        ```
+    - Apply the migration (changes described by the migration script) to the database:
+        ```
+        $ flask db upgrade
+        ```
+    **Note**: _Each time you make changes to the models, you need to run the migrate and upgrade commands to update the database_
+
+    - To downgrade the database to the previous migration, you need to run the downgrade command:
+        ```
+        $ flask db upgrade
+        ```
+
+6. Remote Migration
+    https://realpython.com/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/#remote-migration
 
 - ### jQuery
 Add jQuery script using the CDN (Content Delivery Network) version of the framework.
