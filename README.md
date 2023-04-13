@@ -6,7 +6,22 @@ The app allows to perform full CRUD (create, read, update, and delete) functiona
 
 
 ## Features
+### Navigation Bar
+The navigation bar is displayed at the top of the page. It includes a logo with the name of the app and link to the home page. The navigation bar also includes a button to add a new task and a button to open a modal window with a list of categories.
 
+### Main Content
+- #### Add a Task
+The home page displays a button to add a task. When the button is clicked, the window is expanded and a form to add a task is displayed. The form includes fields for the task name, task description, due date, if the task is urgent, and the task category. The form also includes a button to add the task to the database if all fields are filled out.
+
+- #### Tasks
+The List of Tasks is a list of collapsible elements. Each element represents a task storaged in the database. Once the task is clicked, the task details is expanded and displayed. The summary info of the task contains the task name, due date, whether the task is urgent. The task details include the task category, description and buttons to edit or delete the task.
+
+### Categories
+The List of Categories contains a button to add a new category and a list of all categories in the database. Each card of the category list contains the category name and two buttons to edit or delete the category from database. If the category is deleted, all tasks associated with the category are also deleted.
+
+### Form elements
+To provide a more user-friendly experience, the app contains vairous form elements, such as:
+[switches](https://materializecss.com/switches.html), [datepickers](https://materializecss.com/pickers.html), [selectors](https://materializecss.com/select.html), and the [standard input boxes](https://materializecss.com/text-inputs.html).
 
 ## Technologies Used
 - [Materialize](https://materializecss.com/getting-started.html) - front-end framework based on Material Design
