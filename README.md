@@ -1,6 +1,6 @@
 # Task Manager
 
-This mini-project is a Relational Database Management System built using Flask, SQLAlchemy ORM, and a frontend framework Materialize.
+This mini-project is a simple task manager app built using Flask, SQLAlchemy ORM, and a frontend framework Materialize.
 
 The app allows to perform full CRUD (create, read, update, and delete) functionality on a database of tasks. All functionality is available through an HTML-based user interface. To provide a more user-friendly experience, the interface is styled using the Materialize which is a modern responsive front-end framework based off of Google's Material Design concept.
 

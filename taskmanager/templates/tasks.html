@@ -50,12 +50,26 @@
           <a href="{{ url_for('edit_task', task_id=task.id) }}"
             class="btn cyan darken-1 waves-effect waves-light">Edit</a>
           <!-- Modal Trigger -->
-          <a href="#modal1" data-task='#'
-            class="btn cyan lime darken-4 waves-effect waves-light modal-trigger">Delete</a>
+          <a href="#modal-delete-task" data-task='{{ task.to_dict()|tojson }}'
+            class="btn cyan lime darken-4 waves-effect waves-light modal-trigger delete-task-btn">
+            Delete
+          </a>
         </div>
       </div>
     </li>
   {% endfor %}
 </ul>
+
+<!-- Modal Delete Task -->
+<div id="modal-delete-task" class="modal delete-modal">
+  <div class="modal-content">
+    <h4 class="white-text center-align">Delete task <span id="modal-task-name" class="cyan-text"></span>?</h4>
+  </div>
+  <div class="modal-footer">
+    <button class="modal-close btn red waves-effect waves-red">NO</button>
+    <a href="" id="confirm-delete-task"
+      class="modal-close btn waves-effect">YES</a>
+  </div>
+</div>
 
 {% endblock %}

@@ -20,24 +20,27 @@
         <a href="{{ url_for('edit_category', category_id=category.id) }}"
           class="btn cyan darken-1 waves-effect waves-light">Edit</a>
         <!-- Modal Trigger -->
-        <a href="#modal-delete-category" id="delete-category-btn" data-category='{{ category.to_dict()|tojson }}'
-          class="btn cyan lime darken-4 waves-effect waves-light modal-trigger">Delete</a>
+        <a href="#modal-delete-category" data-category='{{ category.to_dict()|tojson }}'
+          class="btn cyan lime darken-4 waves-effect waves-light modal-trigger delete-category-btn">
+          Delete
+        </a>
       </div>
     </div>
   </div>
   {% endfor %}
 </div>
 
-<!-- Modal Structure -->
-<div id="modal-delete-category" class="modal">
+<!-- Modal Delete Category -->
+<div id="modal-delete-category" class="modal delete-modal">
   <div class="modal-content">
-    <h4 class="white-text">Delete category <span id="modal-category-name" class="cyan-text"></span>?</h4>
-    <p class="white-text">All tasks related to this category will be deleted.</p>
+    <h4 class="white-text center-align">Delete category <span id="modal-category-name" class="cyan-text"></span>?</h4>
+    <p class="deep-orange-text text-accent-3">All tasks related to this category will be deleted!</p>
   </div>
   <div class="modal-footer">
     <button class="modal-close btn red waves-effect waves-red">NO</button>
-    <a href="" id="confirm-delete"
-      class="modal-close btn waves-effect">YES</a>
+    <a href="" id="confirm-delete-category" class="modal-close btn waves-effect">
+      YES
+    </a>
   </div>
 </div>
 
