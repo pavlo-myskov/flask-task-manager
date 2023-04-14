@@ -47,6 +47,7 @@ main {
   background-color: rgba(0, 0, 0, 0.7);
   max-width: 40%;
   will-change: top, opacity;
+  color: white;
 }
 
 .modal-footer {
@@ -63,4 +64,13 @@ main {
   .modal {
     max-width: 60%;
   }
+}
+
+#flashes-modal li {
+  font-size: 1.5rem;
+}
+
+#flashes-modal .btn {
+  margin-top: 2rem;
+  width: 80px;
 }

@@ -47,7 +47,7 @@
             </p>
           {% endif %}
         <div>
-          <a href="#"
+          <a href="{{ url_for('edit_task', task_id=task.id) }}"
             class="btn cyan darken-1 waves-effect waves-light">Edit</a>
           <!-- Modal Trigger -->
           <a href="#modal1" data-task='#'

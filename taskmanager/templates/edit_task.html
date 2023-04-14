@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="teal-text text-darken-3 center-align">Add Task</h3>
+<h3 class="teal-text text-darken-3 center-align">Edit Task</h3>
 
 <div class="row card-panel grey lighten-4">
-  <form class="col s12" method="post" action="{{ url_for('add_task') }}">
+  <form class="col s12" method="post" action="{{ url_for('edit_task', task_id=task.id) }}">
     <!-- task_name -->
     <div class="row">
       <div class="input-field col s12">
         <i class="material-icons prefix teal-text text-darken-3">check</i>
-        <input id="task_name" name="task_name" type="text" minlength="3" maxlength="25" class="validate" required>
+        <input id="task_name" name="task_name" value="{{ task.task_name }}" type="text" minlength="3" maxlength="25"
+          class="validate" required>
         <label for="task_name">Task Name</label>
       </div>
     </div>
@@ -18,7 +19,7 @@
       <div class="input-field col s12">
         <i class="material-icons prefix teal-text text-darken-3">clear_all</i>
         <textarea id="task_description" name="task_description" type="text" maxlength="200"
-          class="materialize-textarea validate"></textarea>
+          class="materialize-textarea validate">{{ task.task_description if task.task_description is not none else '' }}</textarea>
         <label for="task_description">Task Description</label>
       </div>
     </div>
@@ -26,7 +27,8 @@
     <div class="row">
       <div class="input-field col s12">
         <i class="material-icons prefix teal-text text-darken-3">date_range</i>
-        <input id="due_date" name="due_date" type="text" class="datepicker validate">
+        <input id="due_date" name="due_date" value="{{ task.due_date.strftime('%d %B, %Y') if task.due_date is not none else '' }}"
+          type="text" class="datepicker validate">
         <label for="due_date">Due Date</label>
       </div>
     </div>
@@ -36,7 +38,7 @@
         <div class="switch">
           <i class="material-icons left teal-text text-darken-3">priority_high</i>
           <label for="is_urgent">
-            <input id="is_urgent" name="is_urgent" type="checkbox">
+            <input id="is_urgent" name="is_urgent" type="checkbox" {% if task.is_urgent %}checked{% endif %}>
             <span class="lever"></span>
             Is Urgent
           </label>
@@ -48,9 +50,10 @@
       <div class="input-field col s12">
         <i class="material-icons prefix teal-text text-darken-3">folder_open</i>
         <select id="category_id" name="category_id" class="validate" required>
-          <option value="" disabled selected>Choose Category</option>
           {% for category in categories %}
-          <option value="{{ category.id }}">{{ category.category_name }}</option>
+          <option value="{{ category.id }}" {% if category.id == task.category.id %} selected {% endif %}>
+            {{- category.category_name -}}
+          </option>
           {% endfor %}
         </select>
         <label for="category_id">Category</label>
@@ -60,7 +63,7 @@
     <div class="row">
       <div class="col s12 center-align">
         <button type="submit" class="btn-large teal">
-          Add Task <i class="material-icons right">add_box</i>
+          Edit Task<i class="material-icons right">edit</i>
         </button>
       </div>
     </div>
@@ -72,13 +75,13 @@
   <div class="modal-content center-align">
     <div id="flashes-wrapper">
       {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <ul class="flashes">
-            {% for msg in messages %}
-              <li>{{ msg }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+      {% if messages %}
+      <ul class="flashes">
+        {% for msg in messages %}
+        <li>{{ msg }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
       {% endwith %}
     </div>
     <button class="modal-close btn waves-effect">OK</button>

@@ -15,11 +15,21 @@ $(document).ready(function () {
     // initialize the collapsible task elements
     $('.collapsible').collapsible();
 
-    // modal Initialization
-    const modal1 = $('#modal1').modal();
-    var instance = M.Modal.getInstance(modal1);
-    // instance.options.dismissible = false;
-    instance.options.opacity = 0.4;
+    // confirm delete modal Initialization
+    M.Modal.init($('#modal1'), {
+        opacity: 0.4
+    });
+
+    // flashes modal Initialization
+    M.Modal.init($("#flashes-modal"), {
+        opacity: 0.4,
+    });
+    const flashesInstance = M.Modal.getInstance($("#flashes-modal"));
+    // flashing message in modal
+    console.log($("#flashes-wrapper *"));
+    if ($("#flashes-wrapper *").length > 0) {
+        flashesInstance.open();
+    }
 
     // Populate a modal with info about a category and set the delete link for that category.
     $(".modal-trigger").on('click', function() {
