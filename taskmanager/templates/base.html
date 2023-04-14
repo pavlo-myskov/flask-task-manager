@@ -6,8 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link type="image/png" sizes="16x16" rel="icon" href="{{ url_for('static', filename='images/icons8-todo-list-16.png') }}">
-  <link type="image/png" sizes="32x32" rel="icon" href="{{ url_for('static', filename='/images/icons8-todo-list-32.png') }}">
+  <link type="image/png" sizes="16x16" rel="icon"
+    href="{{ url_for('static', filename='images/icons8-todo-list-16.png') }}">
+  <link type="image/png" sizes="32x32" rel="icon"
+    href="{{ url_for('static', filename='/images/icons8-todo-list-32.png') }}">
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css"
@@ -49,6 +51,24 @@
       </div>
     </div>
   </footer>
+
+  <!-- Flash Modal -->
+  <div id="flashes-modal" class="modal">
+    <div class="modal-content center-align">
+      <div id="flashes-wrapper">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+          {% for msg in messages %}
+          <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+      </div>
+      <button class="modal-close btn waves-effect">OK</button>
+    </div>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
     crossorigin="anonymous"></script>

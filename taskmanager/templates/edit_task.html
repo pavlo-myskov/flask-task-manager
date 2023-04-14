@@ -70,22 +70,4 @@
   </form>
 </div>
 
-<!-- Flash Modal -->
-<div id="flashes-modal" class="modal">
-  <div class="modal-content center-align">
-    <div id="flashes-wrapper">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class="flashes">
-        {% for msg in messages %}
-        <li>{{ msg }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
-    </div>
-    <button class="modal-close btn waves-effect">OK</button>
-  </div>
-</div>
-
 {% endblock %}

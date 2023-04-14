@@ -17,10 +17,22 @@ def categories():
     return render_template("categories.html", categories=categories)
 
 
+def is_category_exist(category_name):
+    category_name_exists = db.session.query(
+        exists().where(Category.category_name == category_name)).scalar()
+    return category_name_exists
+
+
 @app.route("/add_category", methods=["GET", "POST"])
 def add_category():
     if request.method == "POST":
-        category = Category(category_name=request.form.get("category_name"))
+        category_name = request.form.get("category_name")
+
+        if is_category_exist(category_name):
+            flash(f"Category {category_name} already exists")
+            return redirect(url_for("add_category"))
+
+        category = Category(category_name=category_name)
         db.session.add(category)
         db.session.commit()
         return redirect(url_for("categories"))
@@ -31,7 +43,13 @@ def add_category():
 def edit_category(category_id):
     category = Category.query.get_or_404(category_id)
     if request.method == "POST":
-        category.category_name = request.form.get("category_name")
+        category_name = request.form.get("category_name")
+
+        if is_category_exist(category_name):
+            flash(f"Category {category_name} already exists")
+            return render_template("edit_category.html", category=category)
+
+        category.category_name = category_name
         db.session.commit()
         return redirect(url_for("categories"))
     return render_template("edit_category.html", category=category)
@@ -45,7 +63,7 @@ def delete_category(category_id):
     return redirect(url_for("categories"))
 
 
-def is_task_name_exists(task_name):
+def is_task_exist(task_name):
     # this flask_sqlalchemy method fetch the entire row from the database,
     # which is less efficient compared to using the exists()
     # task = Task.query.filter_by(task_name=task_name).first()
@@ -53,9 +71,9 @@ def is_task_name_exists(task_name):
 
     # exists() function from SQLAlchemy only checks for the existence
     # of the row, without fetching any additional data.
-    task_exist = db.session.query(
+    task_name_exists = db.session.query(
         exists().where(Task.task_name == task_name)).scalar()
-    return task_exist
+    return task_name_exists
 
 
 @app.route("/add_task", methods=["GET", "POST"])
@@ -63,7 +81,8 @@ def add_task():
     categories = list(Category.query.order_by(Category.category_name).all())
     if request.method == "POST":
         task_name = request.form.get("task_name")
-        if is_task_name_exists(task_name):
+
+        if is_task_exist(task_name):
             flash(f"Task {task_name} already exists")
             return redirect(url_for("add_task"))
 
@@ -89,9 +108,10 @@ def edit_task(task_id):
     if request.method == "POST":
         task_name = request.form.get("task_name")
 
-        if is_task_name_exists(task_name):
+        if is_task_exist(task_name):
             flash(f"Task {task_name} already exists!")
-            return render_template("edit_task.html", task=task, categories=categories)
+            return render_template(
+                "edit_task.html", task=task, categories=categories)
 
         task.task_name = task_name
         task.task_description = request.form.get(
