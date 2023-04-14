@@ -210,3 +210,6 @@ Then, add the following line to the end of the `<body>` section of your HTML fil
 ## Deployment
 
 ## Credits
+The webapp build based on the [Code institute](https://codeinstitute.net/) walkthrough from the [Diploma in Full Stack Software Development](https://codeinstitute.net/full-stack-software-development-diploma/) course.
+
+Favicon taken from [icons8](https://icons8.com/)
