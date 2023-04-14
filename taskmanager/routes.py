@@ -45,7 +45,8 @@ def edit_category(category_id):
     if request.method == "POST":
         category_name = request.form.get("category_name")
 
-        if is_category_exist(category_name):
+        if category_name != category.category_name and \
+                is_category_exist(category_name):
             flash(f"Category {category_name} already exists")
             return render_template("edit_category.html", category=category)
 
@@ -108,7 +109,7 @@ def edit_task(task_id):
     if request.method == "POST":
         task_name = request.form.get("task_name")
 
-        if is_task_exist(task_name):
+        if task_name != task.task_name and is_task_exist(task_name):
             flash(f"Task {task_name} already exists!")
             return render_template(
                 "edit_task.html", task=task, categories=categories)
