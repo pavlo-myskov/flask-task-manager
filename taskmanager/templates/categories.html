@@ -20,7 +20,7 @@
         <a href="{{ url_for('edit_category', category_id=category.id) }}"
           class="btn cyan darken-1 waves-effect waves-light">Edit</a>
         <!-- Modal Trigger -->
-        <a href="#modal1" data-category='{{ category.to_dict()|tojson }}'
+        <a href="#modal-delete-category" id="delete-category-btn" data-category='{{ category.to_dict()|tojson }}'
           class="btn cyan lime darken-4 waves-effect waves-light modal-trigger">Delete</a>
       </div>
     </div>
@@ -29,7 +29,7 @@
 </div>
 
 <!-- Modal Structure -->
-<div id="modal1" class="modal">
+<div id="modal-delete-category" class="modal">
   <div class="modal-content">
     <h4 class="white-text">Delete category <span id="modal-category-name" class="cyan-text"></span>?</h4>
     <p class="white-text">All tasks related to this category will be deleted.</p>

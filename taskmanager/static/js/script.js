@@ -1,6 +1,6 @@
 $(document).ready(function () {
     //  initialize the sidenav-trigger line into the navbar
-    $('.sidenav').sidenav();
+    M.Sidenav.init($('.sidenav'));
 
     // initialize datepicker
     let datepicker = document.querySelectorAll('.datepicker');
@@ -10,33 +10,34 @@ $(document).ready(function () {
     });
 
     // initialize the select element
-    $('select').formSelect();
+    M.FormSelect.init($('select'));
 
     // initialize the collapsible task elements
-    $('.collapsible').collapsible();
+    M.Collapsible.init($('.collapsible'));
 
-    // confirm delete modal Initialization
-    M.Modal.init($('#modal1'), {
-        opacity: 0.4
-    });
+
+    // Populate a modal with info about a category and set the delete link for that category.
+    $("#delete-category-btn").on('click', function() {
+        console.log('he')
+        categoryData = $(this).data('category');
+        // console.dir(categoryData)
+        $("#modal-category-name").text(categoryData.category_name);
+        $("#confirm-delete").attr("href", '/delete_category/' + categoryData.id)
+    })
+
+    // `delete category` modal Initialization
+    M.Modal.init($('#modal-delete-category'));
 
     // flashes modal Initialization
     M.Modal.init($("#flashes-modal"), {
         opacity: 0.4,
     });
+
     const flashesInstance = M.Modal.getInstance($("#flashes-modal"));
     // flashing message in modal
-    console.log($("#flashes-wrapper *"));
     if ($("#flashes-wrapper *").length > 0) {
         flashesInstance.open();
     }
-
-    // Populate a modal with info about a category and set the delete link for that category.
-    $(".modal-trigger").on('click', function() {
-        categoryData = $(this).data('category');
-        $("#modal-category-name").text(categoryData.category_name);
-        $("#confirm-delete").attr("href", '/delete_category/' + categoryData.id)
-    })
 
 
     // update copyright year in the footer
