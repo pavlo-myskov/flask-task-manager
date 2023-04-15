@@ -240,7 +240,9 @@ Live Demo: https://taskmanager-flaskapp.herokuapp.com/
     ```$ echo "gunicorn" >> requirements.txt```
 - Create a Heroku Procfile:
     * To run the flask app using using the Gunicorn WSGI server (recommended for production environments):
-        ```$ echo "web: gunicorn app:app" > Procfile```
+        ```$ echo "web: gunicorn run:app" > Procfile```
+        - The `run` refers to the module (file) where your web application's main entry point is located.
+        - The `app` refers to the application object or callable within that module, which is responsible for handling the incoming HTTP requests and returning the appropriate responses. This object is often an instance of a Flask or Django application.
     * To run the flask app using built-in Flask development server (not recommended):
     _Requires app.run() code in the `app.py` script_
         ```$ echo "web: python app.py" > Procfile```
