@@ -325,6 +325,43 @@ If you are going to use new different type of database you need to initialize th
     $ exit
     ```
 
+- ##### Data Migration using `pg_dump` and `pg_restore`
+1. Dump the local database to a file:
+    ```
+    $ pg_dump -U postgres -F t --data-only --exclude-table=public.alembic_version your_local_database > local_db_dump.tar
+    ```
+
+    - `-U postgres`: Local database username.
+    - `-F t`: Output format as a "tar" archive format.
+    - `--data-only`: Restore only the data, not the schema.
+    - `--exclude-table`: Exclude a specific table
+2. Load the database on the remote server:
+    If your remote database is empty and you have already run `flask db upgrade` to build the schema, restore only the data without the schema:
+    ```
+    $ pg_restore -v --no-acl --no-owner -h remote_db_host -p remote_db_port -U remote_db_username -d remote_db_name local_db_dump.tar
+    ```
+
+    Otherwise, to avoid conflicts, use --clean to drop and recreate the tables and constraints:
+    ```
+    $ pg_restore -v --clean --no-acl --no-owner -h remote_db_host -p remote_db_port -U remote_db_username -d remote_db_name local_db_dump.tar
+    ```
+
+    - `-v`: Enable verbose mode.
+    `--clean`: Drop and recreate tables and constraints before importing data. The schema applied by `flask db upgrade` also will be dropped and recreated, making the `flask db upgrade` unnecessary.
+    - `--no-acl`, `--no-owner`: Helpful for different environments where original owners and access privileges don't apply or cause issues.
+    - `-h`: Remote database host.
+    - `-p`: Remote database port.
+    - `-U`: Remote database username.
+    - `-d`: Remote database name.
+
+Additional options:
+    `-c`: Drop the existing database before restoring.
+    `-n schema`: Restore only objects in the specified schema.
+    `-a`: Restore only data, not tables or indexes, equivalent to `--data-only`.
+    `-t table`: Restore only the specified table.
+    `-C`: Create a database with the same name as the original backup.
+    `-T ignored_table`: Ignore specific tables during restore.
+
 ## Credits
 - The webapp build based on the [Code institute](https://codeinstitute.net/) walkthrough.
 - Migration and Deployment process based on the Real Python and DigitalOcean tutorials and Heroku documentation.
