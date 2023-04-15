@@ -4,6 +4,8 @@ This mini-project is a simple task manager app built using Flask, SQLAlchemy ORM
 
 The app allows to perform full CRUD (create, read, update, and delete) functionality on a database of tasks. All functionality is available through an HTML-based user interface. To provide a more user-friendly experience, the interface is styled using the Materialize which is a modern responsive front-end framework based off of Google's Material Design concept.
 
+Live Demo: https://taskmanager-flaskapp.herokuapp.com/
+
 
 ## Features
 ### Navigation Bar
@@ -93,16 +95,38 @@ To isolate the project from the rest of the system, I used a virtual environment
     pip install -r requirements.txt
     ```
 
-- ### App Configuration
-1. Create environment variable for sensitive information and add it to the `<.gitignore>` file:
+- ### App Environment Configuration Setup
+**Configuring from Python Files `<config.py>` and `<.env>`**
+
+Most applications need more than one configuration. There should be at least separate configurations for the production server and the one used during development. Configuration becomes more useful if you can store it in a separate file, ideally located outside the actual application package. You can deploy your application, then separately configure it for the specific deployment. This is especially useful if you have multiple environments, such as development, testing, and production.
+
+- Create configuration file `<config.py>` in the root package.
+- Install the `python-dotenv` package to load the environment variables from the `<.env>` file:
     ```
-    $ touch env.py .gitignore
-    $ echo env.py >> .gitignore
+    $ pip install python-dotenv
     ```
-2. Set the environment variables in the `<env.py>` file:
-    See the `example_env.py` file.
-3. Make imports and set the configuration in the `__init__.py` file of the main Flask app package.
-4. Create database (_PostgreSQL 14/Ubuntu 22.04_):
+- Import the `load_dotenv()` function in the `<config.py>` file:
+    ```
+    from dotenv import load_dotenv
+    load_dotenv()
+    ```
+- Create environment variable `<.env>` for sensitive information and add it to the `<.gitignore>` file:
+    ```
+    $ touch .env .gitignore
+    $ echo .env >> .gitignore
+    ```
+- Set the environment variables in the `<.env>` file:
+    See the `<.env_example>` file.
+- Import the `load_config()` function in the `__init__.py` file of the `taskmanager` package:
+    ```
+    from .config import load_config
+    app.config.from_object(load_config())
+    ```
+
+- ### Database Setup
+
+- ##### Local Setup
+- Create database (_PostgreSQL 14/Ubuntu 22.04_):
     - Start running the PostgreSQL server:
         ```
         $ sudo service postgresql start
@@ -135,7 +159,7 @@ To isolate the project from the rest of the system, I used a virtual environment
         ```
     - Create tables using the SQLAlchemy ORM in the `models.py` file
 
-5. Local Migration
+- ##### Local Migration
 
     - Initial setup
 
@@ -176,11 +200,8 @@ To isolate the project from the rest of the system, I used a virtual environment
 
     - To downgrade the database to the previous migration, you need to run the downgrade command:
         ```
-        $ flask db upgrade
+        $ flask db downgrade
         ```
-
-6. Remote Migration
-    https://realpython.com/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/#remote-migration
 
 - ### jQuery
 Add jQuery script using the CDN (Content Delivery Network) version of the framework.
@@ -208,8 +229,85 @@ Then, add the following line to the end of the `<body>` section of your HTML fil
 ```
 
 ## Deployment
+The application is deployed on Heroku.
+
+Live Demo: https://taskmanager-flaskapp.herokuapp.com/
+
+#### Deployment process using Heroku CLI:
+- Create requirements file:
+    ```$ pip freeze > requirements.txt```
+- Add gunicorn server to requirements:
+    ```$ echo "gunicorn" >> requirements.txt```
+- Create a Heroku Procfile:
+    * To run the flask app using using the Gunicorn WSGI server (recommended for production environments):
+        ```$ echo "web: gunicorn app:app" > Procfile```
+    * To run the flask app using built-in Flask development server (not recommended):
+    _Requires app.run() code in the `app.py` script_
+        ```$ echo "web: python app.py" > Procfile```
+- Login to Heroku:
+    ```$ heroku login```
+- Create a Heroku app:
+    For existing repositories, simply add the heroku remote (connect to remote).
+    ```$ heroku create example-app (or create using UI heroku)```
+- Connect Git remote to Heroku:
+    * By Heroku CLI and app name (full string can be obtained from the app's deploy page):
+    ```$ heroku git:remote -a example-app```
+    * By Heroku git URL ( URL can be obtained from the app's settings page on the Heroku):
+    ```$ git remote add heroku <heroku-git-url>```
+- Set environment variables:
+    ```
+    $ heroku config:set <key>=<value>
+    ---
+    $ heroku config:set SECRET_KEY=mysecretkey
+    $ heroku config:set DATABASE_URL=<database_url>
+    $ heroku config:set ENV=production
+    $ heroku config:set FLASK_APP=run.py
+    ```
+- Commit all changes to Git
+    ```$ git add .```
+    ```$ git commit -m "Setup Heroku files for deployment"```
+- Deploy to Heroku directly from CLI or connect to GitHub using Heroku UI:
+    ```$ git push heroku master```
+
+### Database Setup
+- ##### Remote Setup (_ElephantSQL_)
+- Create a new database in ElephantSQL (`Create new instance`)
+- Give your plan Name (this is commonly the name of your application) and region (choose the closest region to you)
+- Copy the database URL
+- Paste the database URL in the Heroku Config Vars as `DATABASE_URL` or use the Heroku CLI:
+    ```
+    $ heroku config:set DATABASE_URL=<database_url>
+    ```
+
+- ##### Remote Migration
+The remote migration process is the same as the local migration process, except that you need to run the commands on the Heroku server. To run the commands on the Heroku server, you need to use the Heroku CLI or the console on the Heroku UI app page and before the commands put the `heroku run` command. E.g.: `heroku run flask db upgrade --app <app_name>`
+
+- Remote Database Migration
+If you are using the same type of database for both local development and production (e.g., both are PostgreSQL), you can generate the migration scripts using your local database, push the migrations folder to the remote repository, and then apply the migrations to the remote database.
+
+Just run the following commands on the Heroku server:
+    ```
+    $ heroku run bash --app taskmanager-flaskapp
+    $ flask db upgrade
+    $ exit
+    ```
+
+- Remote Database Initialization
+If you are going to use new different type of database you need to initialize the database on the remote server. Don't push the migrations folder to the remote repository. Just run the following commands on the Heroku server:
+    ```
+    $ heroku run <command>
+    or
+    $ heroku run <command> --app <app_name>
+    ---
+    $ heroku run bash --app taskmanager-flaskapp
+    $ flask db init
+    $ flask db migrate -m "Initial migration."
+    $ flask db upgrade
+    $ exit
+    ```
 
 ## Credits
-The webapp build based on the [Code institute](https://codeinstitute.net/) walkthrough from the [Diploma in Full Stack Software Development](https://codeinstitute.net/full-stack-software-development-diploma/) course.
+- The webapp build based on the [Code institute](https://codeinstitute.net/) walkthrough.
+- Migration and Deployment process based on the Real Python and DigitalOcean tutorials and Heroku documentation.
 
 Favicon taken from [icons8](https://icons8.com/)
