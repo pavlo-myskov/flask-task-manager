@@ -163,7 +163,7 @@ Most applications need more than one configuration. There should be at least sep
 
     - Initial setup
 
-    _This method only for initial setup, it creates all the necessary tables in your database as defined by your SQLAlchemy models_
+    _This method only for initial setup, it creates all the necessary tables in your database as defined by your SQLAlchemy models. **Not recommended** if you are going to use Flask-Migrate extension, as initial setup woun't contain information about creating tables which affects the remote migration, and you will have to manually create the tables in the database using the the same method as for the local setup._
         ```
         $ python
         >>> from taskmanager import db
@@ -280,10 +280,12 @@ Live Demo: https://taskmanager-flaskapp.herokuapp.com/
     ```
 
 - ##### Remote Migration
-The remote migration process is the same as the local migration process, except that you need to run the commands on the Heroku server. To run the commands on the Heroku server, you need to use the Heroku CLI or the console on the Heroku UI app page and before the commands put the `heroku run` command. E.g.: `heroku run flask db upgrade --app <app_name>`
+The remote migration process is the same as the local migration process, except that you need to run the commands on the Heroku server and don't need to use `flask db init` and `flask db migrate` if you gonna apply the same changes for the new DB.
+
+To run the commands on the Heroku server, you need to use the Heroku CLI or the console on the Heroku UI app page and before the commands put the `heroku run` command. E.g.: `heroku run flask db upgrade --app <app_name>`
 
 - Remote Database Migration
-If you are using the same type of database for both local development and production (e.g., both are PostgreSQL), you can generate the migration scripts using your local database, push the migrations folder to the remote repository, and then apply the migrations to the remote database.
+If you are using the same type of database for both local development and production (e.g., both are PostgreSQL), you can use migrations info from your local database that contained in the `migrations` folder. Push the migrations folder to the remote repository, and then apply the migrations to the remote database.
 
 Just run the following commands on the Heroku server:
     ```
@@ -291,6 +293,7 @@ Just run the following commands on the Heroku server:
     $ flask db upgrade
     $ exit
     ```
+**Note:**_It works correctly if you initialized your local migrations using Flask-Migrate as it contains the table creation information. If you initialized your local migrations manually, you need to create the tables manually on the remote database._
 
 - Remote Database Initialization
 If you are going to use new different type of database you need to initialize the database on the remote server. Don't push the migrations folder to the remote repository. Just run the following commands on the Heroku server:
