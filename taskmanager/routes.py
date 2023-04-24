@@ -25,17 +25,34 @@ def is_category_exist(category_name):
 
 @app.route("/add_category", methods=["GET", "POST"])
 def add_category():
-    if request.method == "POST":
-        category_name = request.form.get("category_name")
+    MAX_CATEGORIES = 10
+    # Get the number of categories in the database
+    categories_count = Category.query.count()
+    # or db.session.query(Category).count()
 
+    if request.method == "POST":
+        # Check if the maximum number of categories has been reached
+        # If so, redirect to the categories page and display a flash message
+        if categories_count >= MAX_CATEGORIES:
+            flash(f"Maximum number of categories ({MAX_CATEGORIES}) reached! \
+                   Please delete some categories before adding new ones.")
+            return redirect(url_for("categories"))
+
+        # Check if the category already exists
+        # If so, redirect to the categories page and display a flash message
+        category_name = request.form.get("category_name")
         if is_category_exist(category_name):
             flash(f"Category {category_name} already exists")
             return redirect(url_for("add_category"))
 
+        # If the category does not exist and the maximum number of categories
+        # has not been reached, add the category to the database
         category = Category(category_name=category_name)
         db.session.add(category)
         db.session.commit()
         return redirect(url_for("categories"))
+
+    # If the request method is GET, render the add_category template
     return render_template("add_category.html")
 
 
