@@ -25,12 +25,12 @@ def is_category_exist(category_name):
 
 @app.route("/add_category", methods=["GET", "POST"])
 def add_category():
-    MAX_CATEGORIES = 10
-    # Get the number of categories in the database
-    categories_count = Category.query.count()
-    # or db.session.query(Category).count()
-
     if request.method == "POST":
+        MAX_CATEGORIES = 10
+        # Get the number of categories in the database
+        categories_count = Category.query.count()
+        # or db.session.query(Category).count()
+
         # Check if the maximum number of categories has been reached
         # If so, redirect to the categories page and display a flash message
         if categories_count >= MAX_CATEGORIES:
@@ -96,10 +96,22 @@ def is_task_exist(task_name):
 
 @app.route("/add_task", methods=["GET", "POST"])
 def add_task():
-    categories = list(Category.query.order_by(Category.category_name).all())
     if request.method == "POST":
-        task_name = request.form.get("task_name")
+        MAX_TASKS = 10
+        # Get the number of categories in the database
+        tasks_count = Task.query.count()
+        # or db.session.query(Task).count()
 
+        # Check if the maximum number of tasks has been reached
+        # If so, redirect to the home page and display a flash message
+        if tasks_count >= MAX_TASKS:
+            flash(f"Maximum number of tasks ({MAX_TASKS}) reached! \
+                   Please delete some tasks before adding new ones.")
+            return redirect(url_for("home"))
+
+        # Check if the task already exists
+        # If so, redirect to the add_task page and display a flash message
+        task_name = request.form.get("task_name")
         if is_task_exist(task_name):
             flash(f"Task {task_name} already exists")
             return redirect(url_for("add_task"))
@@ -116,6 +128,9 @@ def add_task():
         db.session.commit()
         return redirect(url_for("home"))
 
+    # If the request method is GET, render the add_task template
+    # Get all the categories from the database and store them in a list
+    categories = list(Category.query.order_by(Category.category_name).all())
     return render_template("add_task.html", categories=categories)
 
 
